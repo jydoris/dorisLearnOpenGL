@@ -11,19 +11,27 @@ Shader::Shader(const char* vertexPath, const char* fragPath)
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;
 
-    vShaderFile.open(vertexPath);
-    fShaderFile.open(fragPath);
+    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-    std::stringstream vShaderStream, fShaderStream;
+    try {
+        vShaderFile.open(vertexPath);
+        fShaderFile.open(fragPath);
 
-    vShaderStream << vShaderFile.rdbuf();
-    fShaderStream << fShaderFile.rdbuf();
+        std::stringstream vShaderStream, fShaderStream;
 
-    vShaderFile.close();
-    fShaderFile.close();
+        vShaderStream << vShaderFile.rdbuf();
+        fShaderStream << fShaderFile.rdbuf();
 
-    vertexCode = vShaderStream.str();
-    fragCode = fShaderStream.str();
+        vShaderFile.close();
+        fShaderFile.close();
+
+        vertexCode = vShaderStream.str();
+        fragCode = fShaderStream.str();
+    } catch (std::ifstream::failure e) {
+         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+    }
+
 
     const char* vShaderSource = vertexCode.c_str();
     const char* fShaderSource = fragCode.c_str();
