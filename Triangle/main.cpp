@@ -73,9 +73,12 @@ int main()
     glEnableVertexAttribArray(2);
 
 
-    unsigned int texture;
-    std::string texPath = "/Users/doris/Desktop/GIT/dorisLearnOpengl/texture/wall.jpg";
-    loadTexture(texture, texPath.c_str());
+    unsigned int texture1, texture2;
+    std::string texPath1 = "/Users/doris/Desktop/GIT/dorisLearnOpengl/texture/wall.jpg";
+    std::string texPath2 = "/Users/doris/Desktop/GIT/dorisLearnOpengl/texture/awesomeface.png";
+    loadTexture(texture1, texPath1.c_str());
+    loadTexture(texture2, texPath2.c_str());
+
 
     const char *vertexPath ="/Users/doris/Desktop/GIT/dorisLearnOpengl/Triangle/vertex.vs";
 
@@ -83,6 +86,9 @@ int main()
 
     Shader shader(vertexPath, fragmentPath);
     shader.use();
+
+    glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
+    glUniform1i(glGetUniformLocation(shader.ID, "texture2"), 1);
 
     glBindVertexArray(VAO);
 
@@ -100,7 +106,11 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -154,7 +164,10 @@ void loadTexture(unsigned int &tex, const char *path){
     unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
 
     if(data){
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        if(nrChannels == 3)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        else if(nrChannels == 4)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else{
