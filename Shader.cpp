@@ -80,3 +80,14 @@ void Shader::use()
 {
     glUseProgram(ID);
 }
+
+void Shader::uniformSetInt(const std::string &name, int value)
+{
+    unsigned int loc = glGetUniformLocation(ID, name.c_str());
+    glUniform1i(loc, value);
+}
+void Shader::uniformSetMat4(const std::string &name, const glm::mat4 &mat)
+{
+    unsigned int loc = glGetUniformLocation(ID, name.c_str());
+    glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
+}

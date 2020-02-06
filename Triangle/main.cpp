@@ -100,8 +100,8 @@ int main()
     Shader shader(vertexPath, fragmentPath);
     shader.use();
 
-    glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
-    glUniform1i(glGetUniformLocation(shader.ID, "texture2"), 1);
+    shader.uniformSetInt("texture1", 0);
+    shader.uniformSetInt("texture2", 1);
 
     glBindVertexArray(VAO);
 
@@ -111,8 +111,7 @@ int main()
     trans = glm::translate(trans, glm::vec3(1.0, 1.0, 0.0));
     trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
 
-    glad_glUniformMatrix4fv(glGetUniformLocation(shader.ID, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
-
+    shader.uniformSetMat4("transform", trans);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
