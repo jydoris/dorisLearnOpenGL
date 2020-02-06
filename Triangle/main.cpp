@@ -105,13 +105,18 @@ int main()
 
     glBindVertexArray(VAO);
 
-    glm::mat4 trans = glm::mat4(1.0);
+    glm::mat4 model = glm::mat4(1.0);
+    model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
+    shader.uniformSetMat4("model", model);
 
-    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 1.0));
-    trans = glm::translate(trans, glm::vec3(1.0, 1.0, 0.0));
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+    glm::mat4 view = glm::mat4(1.0);
+    view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
+    shader.uniformSetMat4("view", view);
 
-    shader.uniformSetMat4("transform", trans);
+    glm::mat4 projection = glm::mat4(1.0);
+    projection = glm::perspective(glm::radians(45.0f), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
+    shader.uniformSetMat4("proj", projection);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
