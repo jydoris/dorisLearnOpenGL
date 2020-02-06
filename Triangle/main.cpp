@@ -5,6 +5,9 @@
 
 #include "Shader.h"
 #include "stb_image.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -101,6 +104,14 @@ int main()
     glUniform1i(glGetUniformLocation(shader.ID, "texture2"), 1);
 
     glBindVertexArray(VAO);
+
+    glm::mat4 trans = glm::mat4(1.0);
+
+    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 1.0));
+    trans = glm::translate(trans, glm::vec3(1.0, 1.0, 0.0));
+    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+
+    glad_glUniformMatrix4fv(glGetUniformLocation(shader.ID, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
     // render loop
     // -----------
