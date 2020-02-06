@@ -95,6 +95,19 @@ int main()
        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
    };
 
+    glm::vec3 cubePositions[] = {
+      glm::vec3( 0.0f,  0.0f,  0.0f),
+      glm::vec3( 2.0f,  5.0f, -15.0f),
+      glm::vec3(-1.5f, -2.2f, -2.5f),
+      glm::vec3(-3.8f, -2.0f, -12.3f),
+      glm::vec3( 2.4f, -0.4f, -3.5f),
+      glm::vec3(-1.7f,  3.0f, -7.5f),
+      glm::vec3( 1.3f, -2.0f, -2.5f),
+      glm::vec3( 1.5f,  2.0f, -2.5f),
+      glm::vec3( 1.5f,  0.2f, -1.5f),
+      glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
+
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -165,12 +178,15 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
-        model = glm::mat4(1.0);
-        model = glm::rotate(model,float(glfwGetTime()) * glm::radians(-45.0f), glm::vec3(1.0, 1.0, 0.0));
-        shader.uniformSetMat4("model", model);
-
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for (int i = 0; i < 10; i++) {
+            model = glm::mat4(1.0);
+            model = glm::translate(model, cubePositions[i]);
+            float angle =  (i+1) * 20.0 * glfwGetTime();
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0, 1.0, 0.0));
+            shader.uniformSetMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
