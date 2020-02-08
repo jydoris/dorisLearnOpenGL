@@ -20,6 +20,9 @@ glm::vec3 cameraPos = glm::vec3(0.0, 0.0, 3.0);
 glm::vec3 cameraFront = glm::vec3(0.0, 0.0, -1.0);
 glm::vec3 cameraUp = glm::vec3(0.0, 1.0, 0.0);
 
+float deltTime = 0.0f;
+float lastFrameTime = 0.0f;
+
 int main()
 {
     // glfw: initialize and configure
@@ -162,8 +165,12 @@ int main()
     glEnable(GL_DEPTH_TEST);
     // render loop
     // -----------
+    lastFrameTime = glfwGetTime();
     while (!glfwWindowShouldClose(window))
     {
+        float now = glfwGetTime();
+        deltTime = now - lastFrameTime;
+        lastFrameTime = now;
         // input
         // -----
         processInput(window);
@@ -212,7 +219,7 @@ void processInput(GLFWwindow *window)
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    const float movSpeed = 0.03;
+    const float movSpeed = 2.5f * deltTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         cameraPos += cameraFront * movSpeed;
     }
