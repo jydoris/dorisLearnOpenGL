@@ -16,6 +16,9 @@ void loadTexture(unsigned int &tex, const char *path);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+glm::vec3 cameraPos = glm::vec3(0.0, 0.0, 3.0);
+glm::vec3 cameraFront = glm::vec3(0.0, 0.0, -1.0);
+glm::vec3 cameraUp = glm::vec3(0.0, 1.0, 0.0);
 
 int main()
 {
@@ -150,8 +153,6 @@ int main()
     shader.uniformSetMat4("model", model);
 
     glm::mat4 view = glm::mat4(1.0);
-//    view = glm::translate(view, glm::vec3(0.0, 0.0, -3.0));
-//    shader.uniformSetMat4("view", view);
 
     glm::mat4 projection = glm::mat4(1.0);
     projection = glm::perspective(glm::radians(45.0f), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
@@ -179,10 +180,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
 
         glBindVertexArray(VAO);
-        const float radius = 10;
-        float camX = sin(glfwGetTime()) * radius;
-        float camZ = cos(glfwGetTime()) * radius;
-        view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront , cameraUp);
         shader.uniformSetMat4("view", view);
         for (int i = 0; i < 10; i++) {
             model = glm::mat4(1.0);
@@ -213,6 +211,21 @@ void processInput(GLFWwindow *window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    const float movSpeed = 0.03;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        cameraPos += cameraFront * movSpeed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        cameraPos -= cameraFront * movSpeed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * movSpeed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * movSpeed;
+    }
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
