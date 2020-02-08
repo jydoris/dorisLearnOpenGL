@@ -9,6 +9,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void mouse_callback(GLFWwindow* window, double posX, double posY);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void loadTexture(unsigned int &tex, const char *path);
@@ -22,6 +24,13 @@ glm::vec3 cameraUp = glm::vec3(0.0, 1.0, 0.0);
 
 float deltTime = 0.0f;
 float lastFrameTime = 0.0f;
+
+float fov = 45.0f;
+bool firstMouse = true;
+double lastPosX = 400;
+double lastPosY = 300;
+float yaw = -90.0f;
+float pitch = 0.0f;
 
 int main()
 {
@@ -47,6 +56,10 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -158,8 +171,6 @@ int main()
     glm::mat4 view = glm::mat4(1.0);
 
     glm::mat4 projection = glm::mat4(1.0);
-    projection = glm::perspective(glm::radians(45.0f), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
-    shader.uniformSetMat4("proj", projection);
 
 
     glEnable(GL_DEPTH_TEST);
@@ -189,6 +200,10 @@ int main()
         glBindVertexArray(VAO);
         view = glm::lookAt(cameraPos, cameraPos + cameraFront , cameraUp);
         shader.uniformSetMat4("view", view);
+
+        projection = glm::perspective(glm::radians(fov), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
+        shader.uniformSetMat4("proj", projection);
+
         for (int i = 0; i < 10; i++) {
             model = glm::mat4(1.0);
             model = glm::translate(model, cubePositions[i]);
@@ -242,6 +257,48 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double posX, double posY)
+{
+    if (firstMouse) {
+        lastPosX = posX;
+        lastPosY = posY;
+        firstMouse = false;
+    }
+
+    double offsetX = posX - lastPosX;
+    double offsetY = lastPosY - posY;
+    lastPosX = posX;
+    lastPosY = posY;
+
+    const float sensitivity = 0.05;
+    offsetX *= sensitivity;
+    offsetY *= sensitivity;
+
+    yaw += offsetX;
+    pitch += offsetY;
+
+    if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    if(fov >= 1.0f && fov <= 45.0f)
+      fov -= yoffset;
+    else if(fov <= 1.0f)
+      fov = 1.0f;
+    else if(fov > 45.0f)
+      fov = 45.0f;
 }
 
 
