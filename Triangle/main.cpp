@@ -19,9 +19,6 @@ void loadTexture(unsigned int &tex, const char *path);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-glm::vec3 cameraPos = glm::vec3(0.0, 0.0, 3.0);
-glm::vec3 cameraFront = glm::vec3(0.0, 0.0, -1.0);
-glm::vec3 cameraUp = glm::vec3(0.0, 1.0, 0.0);
 
 float deltTime = 0.0f;
 float lastFrameTime = 0.0f;
