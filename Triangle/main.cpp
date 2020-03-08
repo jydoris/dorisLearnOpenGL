@@ -141,17 +141,17 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-
+	
     unsigned int texture1, texture2;
-    std::string texPath1 = "/Users/doris/Desktop/GIT/dorisLearnOpengl/texture/wall.jpg";
-    std::string texPath2 = "/Users/doris/Desktop/GIT/dorisLearnOpengl/texture/awesomeface.png";
+    std::string texPath1 = "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/wall.jpg";
+    std::string texPath2 = "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/awesomeface.png";
     loadTexture(texture1, texPath1.c_str());
     loadTexture(texture2, texPath2.c_str());
 
 
-    const char *vertexPath ="/Users/doris/Desktop/GIT/dorisLearnOpengl/Triangle/vertex.vs";
+    const char *vertexPath ="C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/vertex.vs";
 
-    const char *fragmentPath = "/Users/doris/Desktop/GIT/dorisLearnOpengl/Triangle/frag.fs";
+    const char *fragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/frag.fs";
 
     Shader shader(vertexPath, fragmentPath);
     shader.use();
