@@ -17,5 +17,7 @@ public:
     void use();
     void uniformSetInt(const std::string &name, int value);
     void uniformSetMat4(const std::string &name, const glm::mat4 &value);
+	void uniformSetVec3(const std::string &name, const glm::vec3 & value);
+	void uniformSetVec4(const std::string &name, const glm::vec4 & value);
 };
 #endif
