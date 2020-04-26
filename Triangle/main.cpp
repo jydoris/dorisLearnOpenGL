@@ -27,6 +27,9 @@ bool firstMouse = true;
 double lastPosX = 400;
 double lastPosY = 300;
 
+
+glm::vec3 lightPos(0.0, 1.0, -3.0);
+
 Camera camera(glm::vec3(0.4, 0.8, 3.0f));
 
 int main()
@@ -132,10 +135,7 @@ int main()
 	glGenVertexArrays(1, &lampVAO);
 	glBindVertexArray(lampVAO);
 
-	unsigned int lampVBO;
-	glGenBuffers(1, &lampVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, lampVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -163,7 +163,6 @@ int main()
 	Shader lampShader(lamVertexPath, lampFragmentPath);
 	lampShader.use();
 
-	glm::vec3 lightPos(0.0, 1.0, -3.0);
 	glm::mat4 lampModel = glm::translate(model, lightPos);
 	lampModel = glm::scale(lampModel, glm::vec3(0.5f));
 	lampShader.uniformSetMat4("model", lampModel);
@@ -194,6 +193,7 @@ int main()
 		shader.uniformSetMat4("view", view);
         projection = glm::perspective(glm::radians(camera.getZoom()), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
         shader.uniformSetMat4("proj", projection);
+
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
