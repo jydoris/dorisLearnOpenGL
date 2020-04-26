@@ -27,7 +27,7 @@ bool firstMouse = true;
 double lastPosX = 400;
 double lastPosY = 300;
 
-Camera camera(glm::vec3(0.0, 0.5, 3.0f));
+Camera camera(glm::vec3(0.4, 0.8, 3.0f));
 
 int main()
 {
@@ -127,24 +127,49 @@ int main()
     glEnableVertexAttribArray(0);
     
 
-    const char *vertexPath ="C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/vertex.vs";
+	//lamp part VAO
+	unsigned int lampVAO;
+	glGenVertexArrays(1, &lampVAO);
+	glBindVertexArray(lampVAO);
 
-    const char *fragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/frag.fs";
+	unsigned int lampVBO;
+	glGenBuffers(1, &lampVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, lampVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
+	glEnableVertexAttribArray(0);
 
+	//object(cube) shader
+	const char *vertexPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/vertex.vs";
+
+	const char *fragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/frag.fs";
     Shader shader(vertexPath, fragmentPath);
     shader.use();
 	shader.uniformSetVec3("objectColor", objectColor);
 
-    glBindVertexArray(VAO);
+    //glBindVertexArray(VAO);
 
     glm::mat4 model = glm::mat4(1.0);
-    shader.uniformSetMat4("model", model);
-
     glm::mat4 view = glm::mat4(1.0);
-	
-
     glm::mat4 projection = glm::mat4(1.0);
+
+	shader.uniformSetMat4("model", model);
+
+	//lamp shader
+	const char *lamVertexPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/lamp.vs";
+
+	const char *lampFragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/lamp.fs";
+	Shader lampShader(lamVertexPath, lampFragmentPath);
+	lampShader.use();
+
+	glm::vec3 lightPos(0.0, 1.0, -3.0);
+	glm::mat4 lampModel = glm::translate(model, lightPos);
+	lampModel = glm::scale(lampModel, glm::vec3(0.5f));
+	lampShader.uniformSetMat4("model", lampModel);
+	lampShader.uniformSetMat4("view", view);
+	lampShader.uniformSetMat4("proj", projection);
+
 
     glEnable(GL_DEPTH_TEST);
     // render loop
@@ -165,17 +190,20 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
-
-        glBindVertexArray(VAO);
         view = camera.GetViewMatrix();
 		shader.uniformSetMat4("view", view);
-
         projection = glm::perspective(glm::radians(camera.getZoom()), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
         shader.uniformSetMat4("proj", projection);
 
-       
+		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
    
+		lampShader.use();
+		lampShader.uniformSetMat4("view", view);
+		lampShader.uniformSetMat4("proj", projection);
+
+		glBindVertexArray(lampVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
