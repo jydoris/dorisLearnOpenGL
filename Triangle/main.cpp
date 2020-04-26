@@ -29,6 +29,7 @@ double lastPosY = 300;
 
 
 glm::vec3 lightPos(0.0, 1.0, -3.0);
+glm::vec3 lightColor(0.0, 1.0, 0.0);
 
 Camera camera(glm::vec3(0.4, 0.8, 3.0f));
 
@@ -147,6 +148,7 @@ int main()
     Shader shader(vertexPath, fragmentPath);
     shader.use();
 	shader.uniformSetVec3("objectColor", objectColor);
+	shader.uniformSetVec3("lightColor", lightColor);
 
     //glBindVertexArray(VAO);
 
