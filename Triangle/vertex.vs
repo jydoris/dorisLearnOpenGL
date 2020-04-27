@@ -12,6 +12,6 @@ out vec3 Normal;
 void main()
 {
     gl_Position = proj * view * model * vec4(aPos, 1.0); // see how we directly give a vec3 to vec4's constructor
-	Normal = aNormal;
+	Normal = mat3(transpose(inverse(model))) * aNormal;
 	FragPos = vec3(model * (aPos, 1.0));
 }
