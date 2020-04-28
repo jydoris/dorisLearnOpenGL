@@ -28,10 +28,10 @@ double lastPosX = 400;
 double lastPosY = 300;
 
 
-glm::vec3 lightPos(0.0, 1.0, -3.0);
-glm::vec3 lightColor(0.0, 1.0, 0.0);
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
-Camera camera(glm::vec3(0.4, 0.8, 3.0f));
+Camera camera(glm::vec3(0.0, 0.0, 3.0f));
 
 int main()
 {
@@ -152,6 +152,7 @@ int main()
 	shader.uniformSetVec3("objectColor", objectColor);
 	shader.uniformSetVec3("lightColor", lightColor);
 	shader.uniformSetVec3("lightPos", lightPos);
+	shader.uniformSetVec3("viewPos", camera.m_cameraPos);
 
     //glBindVertexArray(VAO);
 
@@ -169,7 +170,7 @@ int main()
 	lampShader.use();
 
 	glm::mat4 lampModel = glm::translate(model, lightPos);
-	lampModel = glm::scale(lampModel, glm::vec3(0.5f));
+	lampModel = glm::scale(lampModel, glm::vec3(0.2f));
 	lampShader.uniformSetMat4("model", lampModel);
 	lampShader.uniformSetMat4("view", view);
 	lampShader.uniformSetMat4("proj", projection);
@@ -190,7 +191,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
