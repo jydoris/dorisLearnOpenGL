@@ -154,8 +154,12 @@ int main()
 	shader.uniformSetVec3("objectMate.diffusePart", 1.0f, 0.5f, 0.31f);
 	shader.uniformSetVec3("objectMate.specularPart", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
-	shader.uniformSetVec3("lightColor", lightColor);
-	shader.uniformSetVec3("lightPos", lightPos);
+
+	shader.uniformSetVec3("light.ambientLig", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("light.diffuseLig", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
+	
+	shader.uniformSetVec3("light.lightPos", lightPos);
 	shader.uniformSetVec3("viewPos", camera.m_cameraPos);
 
     //glBindVertexArray(VAO);

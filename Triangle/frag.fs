@@ -12,30 +12,33 @@ struct Material{
 	float shiness;
 };
 
+struct Light{
+	vec3 lightPos;
 
+	vec3 ambientLig;
+	vec4 diffuseLig;
+	vec3 specularLig;
+};
 
 uniform Material objectMate;
-uniform vec3 lightColor;
-uniform vec3 lightPos;
+uniform Light light;
 uniform vec3 viewPos;
 
 void main()
 {
-	float ambStrength = 0.1;
-	vec3 ambientFac = lightColor * ambStrength;
+	vec3 ambient = light.ambientLig * objectMate.ambientPart;
    
 	//diffuse light
-	vec3 lightVec = normalize(lightPos - FragPos);
+	vec3 lightVec = normalize(light.lightPos - FragPos);
 	vec3 norm = normalize(Normal);
-	float diffuseFac = max(dot(lightVec, norm), 0.0);
+	vec3 diffuse = max(dot(lightVec, norm), 0.0) * objectMate.diffusePart;
 	
 	//specular light
-	float specStrength = 0.5;
 	vec3 viewVec = normalize(viewPos - FragPos);
 	vec3 lightReflect = reflect(-lightVec, norm);
-	float specFac = pow(max(dot(lightReflect, viewVec), 0.0), objectMate.shiness) *specStrength;
+	vec3 specular = pow(max(dot(lightReflect, viewVec), 0.0), objectMate.shiness) * light.specularLig;
 
-	vec3  lightResCor = (ambientFac * objectMate.ambientPart + diffuseFac * objectMate.diffusePart+ specFac * objectMate.specularPart) * lightColor;
+	vec3  lightResCor = ambient + diffuse + specular;
 
     FragColor = vec4(lightResCor, 1.0);
 } 
