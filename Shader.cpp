@@ -86,6 +86,12 @@ void Shader::uniformSetInt(const std::string &name, int value)
     unsigned int loc = glGetUniformLocation(ID, name.c_str());
     glUniform1i(loc, value);
 }
+
+void Shader::uniformSetFloat(const std::string &name, float value)
+{
+	unsigned int loc = glGetUniformLocation(ID, name.c_str());
+	glUniform1f(loc, value);
+}
 void Shader::uniformSetMat4(const std::string &name, const glm::mat4 &mat)
 {
     unsigned int loc = glGetUniformLocation(ID, name.c_str());
@@ -95,6 +101,13 @@ void Shader::uniformSetMat4(const std::string &name, const glm::mat4 &mat)
 void Shader::uniformSetVec3(const std::string &name, const glm::vec3 &value)
 {
 	unsigned int loc = glGetUniformLocation(ID, name.c_str());
+	glUniform3fv(loc, 1, &value[0]);
+}
+
+void Shader::uniformSetVec3(const std::string &name, float a, float b, float c) 
+{
+	unsigned int loc = glGetUniformLocation(ID, name.c_str());
+	glm::vec3 value(a, b, c);
 	glUniform3fv(loc, 1, &value[0]);
 }
 

@@ -149,7 +149,11 @@ int main()
 	const char *fragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/frag.fs";
     Shader shader(vertexPath, fragmentPath);
     shader.use();
-	shader.uniformSetVec3("objectColor", objectColor);
+	//shader.uniformSetVec3("objectColor", objectColor);
+	shader.uniformSetVec3("objectMate.ambientPart", 1.0f, 0.5f, 0.31f);
+	shader.uniformSetVec3("objectMate.diffusePart", 1.0f, 0.5f, 0.31f);
+	shader.uniformSetVec3("objectMate.specularPart", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 	shader.uniformSetVec3("lightColor", lightColor);
 	shader.uniformSetVec3("lightPos", lightPos);
 	shader.uniformSetVec3("viewPos", camera.m_cameraPos);
