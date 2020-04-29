@@ -155,6 +155,7 @@ int main()
 	shader.uniformSetVec3("objectMate.specularPart", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
+
 	shader.uniformSetVec3("light.ambientLig", 0.2f, 0.2f, 0.2f);
 	shader.uniformSetVec3("light.diffuseLig", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
@@ -168,6 +169,7 @@ int main()
     glm::mat4 view = glm::mat4(1.0);
     glm::mat4 projection = glm::mat4(1.0);
 
+	/*shader.uniformSetMat4("model", glm::translate(model, glm::vec3(2.0, 0.0, 0.0)));*/
 	shader.uniformSetMat4("model", model);
 
 	//lamp shader
@@ -207,6 +209,13 @@ int main()
 		shader.uniformSetMat4("view", view);
         projection = glm::perspective(glm::radians(camera.getZoom()), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
         shader.uniformSetMat4("proj", projection);
+
+		lightColor.x = sin(glfwGetTime() * 2.0);
+		lightColor.y = sin(glfwGetTime() * 0.7);
+		lightColor.z = sin(glfwGetTime() * 1.3);
+		shader.uniformSetVec3("light.ambientLig", lightColor * glm::vec3(0.2f));
+		shader.uniformSetVec3("light.diffuseLig", lightColor * glm::vec3(0.5f));
+		shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
 
 
 		glBindVertexArray(VAO);

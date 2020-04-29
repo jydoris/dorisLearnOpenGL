@@ -16,7 +16,7 @@ struct Light{
 	vec3 lightPos;
 
 	vec3 ambientLig;
-	vec4 diffuseLig;
+	vec3 diffuseLig;
 	vec3 specularLig;
 };
 
@@ -31,12 +31,12 @@ void main()
 	//diffuse light
 	vec3 lightVec = normalize(light.lightPos - FragPos);
 	vec3 norm = normalize(Normal);
-	vec3 diffuse = max(dot(lightVec, norm), 0.0) * objectMate.diffusePart;
+	vec3 diffuse = max(dot(norm, lightVec), 0.0) *light.diffuseLig * objectMate.diffusePart;
 	
 	//specular light
 	vec3 viewVec = normalize(viewPos - FragPos);
 	vec3 lightReflect = reflect(-lightVec, norm);
-	vec3 specular = pow(max(dot(lightReflect, viewVec), 0.0), objectMate.shiness) * light.specularLig;
+	vec3 specular = pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness) * light.specularLig * objectMate.specularPart;
 
 	vec3  lightResCor = ambient + diffuse + specular;
 
