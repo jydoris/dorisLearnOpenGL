@@ -150,9 +150,9 @@ int main()
     Shader shader(vertexPath, fragmentPath);
     shader.use();
 	//shader.uniformSetVec3("objectColor", objectColor);
-	shader.uniformSetVec3("objectMate.ambientPart", 1.0f, 0.5f, 0.31f);
-	shader.uniformSetVec3("objectMate.diffusePart", 1.0f, 0.5f, 0.31f);
-	shader.uniformSetVec3("objectMate.specularPart", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetVec3("objectMate.ambientPart", 0.0f, 0.1f, 0.06f);
+	shader.uniformSetVec3("objectMate.diffusePart", 0.0f, 0.50980392f, 0.50980392f);
+	shader.uniformSetVec3("objectMate.specularPart", 0.50196078f, 0.50196078f, 0.50196078f);
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
@@ -210,11 +210,11 @@ int main()
         projection = glm::perspective(glm::radians(camera.getZoom()), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
         shader.uniformSetMat4("proj", projection);
 
-		lightColor.x = sin(glfwGetTime() * 2.0);
+		/*lightColor.x = sin(glfwGetTime() * 2.0);
 		lightColor.y = sin(glfwGetTime() * 0.7);
-		lightColor.z = sin(glfwGetTime() * 1.3);
-		shader.uniformSetVec3("light.ambientLig", lightColor * glm::vec3(0.2f));
-		shader.uniformSetVec3("light.diffuseLig", lightColor * glm::vec3(0.5f));
+		lightColor.z = sin(glfwGetTime() * 1.3);*/
+		shader.uniformSetVec3("light.ambientLig", 1.0f, 1.0f, 1.0f);
+		shader.uniformSetVec3("light.diffuseLig", 1.0f, 1.0f, 1.0f);
 		shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
 
 
