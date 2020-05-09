@@ -224,6 +224,7 @@ int main()
 		lampShader.use();
 		lampShader.uniformSetMat4("view", view);
 		lampShader.uniformSetMat4("proj", projection);
+		lampShader.uniformSetVec3("lightColor", lightColor);
 
 		glBindVertexArray(lampVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
