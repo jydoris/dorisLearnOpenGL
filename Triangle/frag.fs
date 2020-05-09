@@ -1,13 +1,14 @@
 #version 330 core
 in vec3 Normal;
 in vec3 FragPos;
+in vec2 TexCoord; 
 
 out vec4 FragColor;
 
 
 struct Material{
 	vec3 ambientPart;
-	vec3 diffusePart;
+	sampler2D diffuseMap;
 	vec3 specularPart;
 	float shiness;
 };
@@ -24,6 +25,7 @@ uniform Material objectMate;
 uniform Light light;
 uniform vec3 viewPos;
 
+
 void main()
 {
 	vec3 ambient = light.ambientLig * objectMate.ambientPart;
@@ -31,7 +33,8 @@ void main()
 	//diffuse light
 	vec3 lightVec = normalize(light.lightPos - FragPos);
 	vec3 norm = normalize(Normal);
-	vec3 diffuse = max(dot(norm, lightVec), 0.0) *light.diffuseLig * objectMate.diffusePart;
+	
+	vec3 diffuse = max(dot(norm, lightVec), 0.0) *light.diffuseLig * texture(objectMate.diffuseMap, TexCoord).rgb;
 	
 	//specular light
 	vec3 viewVec = normalize(viewPos - FragPos);
