@@ -135,8 +135,9 @@ int main()
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 
-	unsigned int speuclarM;
-	loadTexture(speuclarM, "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/containerSpecular.png");
+	unsigned int diffuseM, specularM;
+	loadTexture(diffuseM, "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/containerDiffuse.png");
+	loadTexture(specularM, "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/containerSpecular.png");
 
 
 	//lamp part VAO
@@ -155,10 +156,8 @@ int main()
 	const char *fragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/frag.fs";
     Shader shader(vertexPath, fragmentPath);
     shader.use();
-	//shader.uniformSetVec3("objectColor", objectColor);
-	shader.uniformSetVec3("objectMate.ambientPart", 0.0f, 0.1f, 0.06f);
 	shader.uniformSetInt("objectMate.diffuseMap", 0);
-	shader.uniformSetVec3("objectMate.specularPart", 0.50196078f, 0.50196078f, 0.50196078f);
+	shader.uniformSetInt("objectMate.specularPart", 1);
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
@@ -212,7 +211,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, speuclarM);
+		glBindTexture(GL_TEXTURE_2D, diffuseM);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularM);
 
         shader.use();
         view = camera.GetViewMatrix();
