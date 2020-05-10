@@ -157,7 +157,7 @@ int main()
     Shader shader(vertexPath, fragmentPath);
     shader.use();
 	shader.uniformSetInt("objectMate.diffuseMap", 0);
-	shader.uniformSetInt("objectMate.specularPart", 1);
+	shader.uniformSetInt("objectMate.specularMap", 1);
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
@@ -221,13 +221,7 @@ int main()
         projection = glm::perspective(glm::radians(camera.getZoom()), float(SCR_WIDTH) / SCR_HEIGHT, 0.1f, 100.0f);
         shader.uniformSetMat4("proj", projection);
 
-		/*lightColor.x = sin(glfwGetTime() * 2.0);
-		lightColor.y = sin(glfwGetTime() * 0.7);
-		lightColor.z = sin(glfwGetTime() * 1.3);*/
-		shader.uniformSetVec3("light.ambientLig", 1.0f, 1.0f, 1.0f);
-		shader.uniformSetVec3("light.diffuseLig", 1.0f, 1.0f, 1.0f);
-		shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
-
+		shader.uniformSetVec3("viewPos", camera.m_cameraPos);
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);

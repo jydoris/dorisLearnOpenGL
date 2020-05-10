@@ -37,7 +37,8 @@ void main()
 	//specular light
 	vec3 viewVec = normalize(viewPos - FragPos);
 	vec3 lightReflect = reflect(-lightVec, norm);
-	vec3 specular = pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness) * light.specularLig * texture(objectMate.specularMap, TexCoord).rgb;
+	float spec =  pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness);
+	vec3 specular = spec * light.specularLig * texture(objectMate.specularMap, TexCoord).rgb;
 
 	vec3  lightResCor = ambient + diffuse + specular;
 
