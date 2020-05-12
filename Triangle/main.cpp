@@ -135,10 +135,10 @@ int main()
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 
-	unsigned int diffuseM, specularM;
+	unsigned int diffuseM, specularM, emissionM;
 	loadTexture(diffuseM, "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/containerDiffuse.png");
 	loadTexture(specularM, "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/containerSpecular.png");
-
+	loadTexture(emissionM, "C://Users/DORIS/Desktop/dorisLearnOpenGL/texture/emission.jpg");
 
 	//lamp part VAO
 	unsigned int lampVAO;
@@ -158,6 +158,7 @@ int main()
     shader.use();
 	shader.uniformSetInt("objectMate.diffuseMap", 0);
 	shader.uniformSetInt("objectMate.specularMap", 1);
+	shader.uniformSetInt("objectMate.emissionMap", 2);
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
@@ -214,6 +215,8 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, diffuseM);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularM);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, emissionM);
 
         shader.use();
         view = camera.GetViewMatrix();

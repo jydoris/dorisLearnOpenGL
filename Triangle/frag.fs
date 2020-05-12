@@ -9,6 +9,7 @@ out vec4 FragColor;
 struct Material{
 	sampler2D diffuseMap;
 	sampler2D specularMap;
+	sampler2D emissionMap;
 	float shiness;
 };
 
@@ -40,7 +41,7 @@ void main()
 	float spec =  pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness);
 	vec3 specular = spec * light.specularLig * texture(objectMate.specularMap, TexCoord).rgb;
 
-	vec3  lightResCor = ambient + diffuse + specular;
+	vec3  lightResCor = ambient + diffuse + specular + texture(objectMate.emissionMap, TexCoord).rgb;
 
     FragColor = vec4(lightResCor, 1.0);
 } 
