@@ -29,6 +29,7 @@ double lastPosY = 300;
 
 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 Camera camera(glm::vec3(0.0, 0.0, 3.0f));
@@ -176,11 +177,16 @@ int main()
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
-	shader.uniformSetVec3("light.ambientLig", 0.2f, 0.2f, 0.2f);
+	/*shader.uniformSetVec3("light.ambientLig", 0.2f, 0.2f, 0.2f);
 	shader.uniformSetVec3("light.diffuseLig", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
+	shader.uniformSetVec3("light.lightPos", lightPos);*/
+
+	shader.uniformSetVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("dirlight.diffuse", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetVec3("dirlight.specular", 1.0f, 1.0f, 1.0f);
+	shader.uniformSetVec3("dirlight.direction", lightDir);
 	
-	shader.uniformSetVec3("light.lightPos", lightPos);
 	shader.uniformSetVec3("viewPos", camera.m_cameraPos);
 	
 
