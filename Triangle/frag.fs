@@ -13,12 +13,12 @@ struct Material{
 	float shiness;
 };
 
-struct Light{
+struct pointLight{
 	vec3 lightPos;
 
-	vec3 ambientLig;
-	vec3 diffuseLig;
-	vec3 specularLig;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
 };
 
 struct dirLight{
@@ -29,46 +29,49 @@ struct dirLight{
 };
 
 uniform Material objectMate;
-//uniform Light light;
+uniform pointLight pointlight;
 uniform dirLight dirlight;
 uniform vec3 viewPos;
 
 
 void main()
 {
-	//vec3 ambient = light.ambientLig * texture(objectMate.diffuseMap, TexCoord).rgb;
-   	//
-	////diffuse light
-	//vec3 lightVec = normalize(light.lightPos - FragPos);
-	//vec3 norm = normalize(Normal);
-	//vec3 diffuse = max(dot(norm, lightVec), 0.0) *light.diffuseLig * texture(objectMate.diffuseMap, TexCoord).rgb;
-	//
-	////specular light
-	//vec3 viewVec = normalize(viewPos - FragPos);
-	//vec3 lightReflect = reflect(-lightVec, norm);
-	//float spec =  pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness);
-	//vec3 specular = spec * light.specularLig * texture(objectMate.specularMap, TexCoord).rgb;
-	//
-	//vec3  lightResCor = ambient + diffuse + specular + texture(objectMate.emissionMap, TexCoord).rgb;
-
-
-	vec3 ambient = dirlight.ambient * texture(objectMate.diffuseMap, TexCoord).rgb;
-	
+	vec3 ambient = pointlight.ambient * texture(objectMate.diffuseMap, TexCoord).rgb;
+   	
 	//diffuse light
-	vec3 lightVec = normalize(-dirlight.direction);
+	vec3 lightVec = normalize(pointlight.lightPos - FragPos);
 	vec3 norm = normalize(Normal);
-	vec3 diffuse = max(dot(norm, lightVec), 0.0) *dirlight.diffuse * texture(objectMate.diffuseMap, TexCoord).rgb;
+	vec3 diffuse = max(dot(norm, lightVec), 0.0) *pointlight.diffuse * texture(objectMate.diffuseMap, TexCoord).rgb;
 	
 	//specular light
 	vec3 viewVec = normalize(viewPos - FragPos);
 	vec3 lightReflect = reflect(-lightVec, norm);
 	float spec =  pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness);
-	vec3 specular = spec * dirlight.specular * texture(objectMate.specularMap, TexCoord).rgb;
+	vec3 specular = spec * pointlight.specular * texture(objectMate.specularMap, TexCoord).rgb;
 	
 	//emission part
 	vec3 emission = texture(objectMate.emissionMap, TexCoord).rgb;
 
-	vec3  lightResCor = ambient + diffuse + specular ;
+	vec3  lightResCor = ambient + diffuse + specular;
+
+
+	//vec3 ambient = dirlight.ambient * texture(objectMate.diffuseMap, TexCoord).rgb;
+	//
+	////diffuse light
+	//vec3 lightVec = normalize(-dirlight.direction);
+	//vec3 norm = normalize(Normal);
+	//vec3 diffuse = max(dot(norm, lightVec), 0.0) *dirlight.diffuse * texture(objectMate.diffuseMap, TexCoord).rgb;
+	//
+	////specular light
+	//vec3 viewVec = normalize(viewPos - FragPos);
+	//vec3 lightReflect = reflect(-lightVec, norm);
+	//float spec =  pow(max(dot(viewVec, lightReflect), 0.0), objectMate.shiness);
+	//vec3 specular = spec * dirlight.specular * texture(objectMate.specularMap, TexCoord).rgb;
+	//
+	////emission part
+	//vec3 emission = texture(objectMate.emissionMap, TexCoord).rgb;
+	//
+	//vec3  lightResCor = ambient + diffuse + specular ;
 	
 
     FragColor = vec4(lightResCor, 1.0);

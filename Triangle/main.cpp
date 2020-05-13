@@ -177,15 +177,15 @@ int main()
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
-	/*shader.uniformSetVec3("light.ambientLig", 0.2f, 0.2f, 0.2f);
-	shader.uniformSetVec3("light.diffuseLig", 0.5f, 0.5f, 0.5f);
-	shader.uniformSetVec3("light.specularLig", 1.0f, 1.0f, 1.0f);
-	shader.uniformSetVec3("light.lightPos", lightPos);*/
+	shader.uniformSetVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
+	shader.uniformSetVec3("pointlight.lightPos", lightPos);
 
-	shader.uniformSetVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
+	/*shader.uniformSetVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
 	shader.uniformSetVec3("dirlight.diffuse", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetVec3("dirlight.specular", 1.0f, 1.0f, 1.0f);
-	shader.uniformSetVec3("dirlight.direction", lightDir);
+	shader.uniformSetVec3("dirlight.direction", lightDir);*/
 	
 	shader.uniformSetVec3("viewPos", camera.m_cameraPos);
 	
