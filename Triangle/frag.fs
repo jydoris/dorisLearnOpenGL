@@ -19,6 +19,10 @@ struct pointLight{
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+
+	float constant;
+	float linear;
+	float quadratic;
 };
 
 struct dirLight{
@@ -52,7 +56,14 @@ void main()
 	//emission part
 	vec3 emission = texture(objectMate.emissionMap, TexCoord).rgb;
 
-	vec3  lightResCor = ambient + diffuse + specular;
+	//attenuation
+	float distance = length(pointlight.lightPos - FragPos);
+	float attenuation = 1.0 / (pointlight.constant + distance * pointlight.linear + distance * distance * pointlight.quadratic);
+
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
+	vec3  lightResCor = ambient + diffuse  + specular;
 
 
 	//vec3 ambient = dirlight.ambient * texture(objectMate.diffuseMap, TexCoord).rgb;
