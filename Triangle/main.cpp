@@ -196,7 +196,7 @@ int main()
 	shader.uniformSetVec3("spotlight.specular", 1.0f, 1.0f, 1.0f);
 	shader.uniformSetVec3("spotlight.position", camera.m_cameraPos);
 	shader.uniformSetVec3("spotlight.direction", camera.m_front);
-	shader.uniformSetFloat("spotlight.cutOff", glm::cos(25.0f));
+	shader.uniformSetFloat("spotlight.cutOff", glm::cos(glm::radians(12.5f)));
 	
 	shader.uniformSetVec3("viewPos", camera.m_cameraPos);
 	

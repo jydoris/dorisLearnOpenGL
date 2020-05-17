@@ -103,8 +103,8 @@ void main()
 	vec3 norm = normalize(Normal);
 	vec3 diffuse = max(dot(norm, lightVec), 0.0) *spotlight.diffuse * texture(objectMate.diffuseMap, TexCoord).rgb;
 	
-
-	float factor = dot(lightVec, normalize(-spotlight.direction)) > spotlight.cutOff? 1.0 : 0.0;
+	float theta = dot(lightVec, normalize(-spotlight.direction));
+	float factor =  theta > spotlight.cutOff? theta: 0.0;
 	
 	//specular light
 	vec3 viewVec = normalize(viewPos - FragPos);
