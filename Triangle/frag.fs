@@ -43,8 +43,9 @@ struct spotLight{
 	vec3 specular;
 };
 
+#define POINT_LIGHT_NUM 2 
 uniform Material objectMate;
-uniform pointLight pointlight;
+uniform pointLight pointlight[POINT_LIGHT_NUM];
 uniform dirLight dirlight;
 uniform spotLight spotlight;
 uniform vec3 viewPos;
@@ -58,7 +59,8 @@ void main()
 
 	vec3 lightResCor = vec3(0.0f);
 	lightResCor += calDirLight(dirlight);
-	lightResCor += calPointLight(pointlight);
+	for(int i = 0; i < POINT_LIGHT_NUM; i++)
+		lightResCor += calPointLight(pointlight[i]);
 	lightResCor += calSpotLight(spotlight);
 
     FragColor = vec4(lightResCor, 1.0);

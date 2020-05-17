@@ -131,6 +131,11 @@ int main()
 	   glm::vec3(-1.3f,  1.0f, -1.5f)
    };
 
+   glm::vec3 lightPosition[] = {
+	   glm::vec3(0.7f,  0.2f,  2.0f),
+	   glm::vec3(2.3f, -3.3f, -4.0f)
+   };
+
    glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
 
 
@@ -177,13 +182,21 @@ int main()
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
-	shader.uniformSetVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
-	shader.uniformSetVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
-	shader.uniformSetVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
-	shader.uniformSetVec3("pointlight.lightPos", lightPos);
-	shader.uniformSetFloat("pointlight.constant", 1.0);
-	shader.uniformSetFloat("pointlight.linear", 0.09);
-	shader.uniformSetFloat("pointlight.quadratic", 0.032);
+	shader.uniformSetVec3("pointlight[0].ambient", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("pointlight[0].diffuse", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetVec3("pointlight[0].specular", 1.0f, 1.0f, 1.0f);
+	shader.uniformSetVec3("pointlight[0].lightPos", lightPosition[0]);
+	shader.uniformSetFloat("pointlight[0].constant", 1.0);
+	shader.uniformSetFloat("pointlight[0].linear", 0.09);
+	shader.uniformSetFloat("pointlight[0].quadratic", 0.032);
+
+	shader.uniformSetVec3("pointlight[1].ambient", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("pointlight[1].diffuse", 0.5f, 0.5f, 0.5f);
+	shader.uniformSetVec3("pointlight[1].specular", 1.0f, 1.0f, 1.0f);
+	shader.uniformSetVec3("pointlight[1].lightPos", lightPosition[1]);
+	shader.uniformSetFloat("pointlight[1].constant", 1.0);
+	shader.uniformSetFloat("pointlight[1].linear", 0.09);
+	shader.uniformSetFloat("pointlight[1].quadratic", 0.032);
 
 
 	shader.uniformSetVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
@@ -216,13 +229,6 @@ int main()
 
 	const char *lampFragmentPath = "C://Users/DORIS/Desktop/dorisLearnOpenGL/Triangle/lamp.fs";
 	Shader lampShader(lamVertexPath, lampFragmentPath);
-	lampShader.use();
-
-	glm::mat4 lampModel = glm::translate(model, lightPos);
-	lampModel = glm::scale(lampModel, glm::vec3(0.2f));
-	lampShader.uniformSetMat4("model", lampModel);
-	lampShader.uniformSetMat4("view", view);
-	lampShader.uniformSetMat4("proj", projection);
 
 
     glEnable(GL_DEPTH_TEST);
@@ -278,8 +284,14 @@ int main()
 		lampShader.uniformSetVec3("lightColor", lightColor);
 
 		glBindVertexArray(lampVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		for (int i = 0; i < 2; i++)
+		{
+			glm::mat4 lampModel = glm::translate(glm::mat4(1.0), lightPosition[i]);
+			lampModel = glm::scale(lampModel, glm::vec3(0.2f));
+			lampShader.uniformSetMat4("model", lampModel);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+		
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
