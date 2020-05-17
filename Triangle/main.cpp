@@ -177,19 +177,19 @@ int main()
 	shader.uniformSetFloat("objectMate.shiness", 32.0f);
 
 
-	/*shader.uniformSetVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
 	shader.uniformSetVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
 	shader.uniformSetVec3("pointlight.lightPos", lightPos);
 	shader.uniformSetFloat("pointlight.constant", 1.0);
 	shader.uniformSetFloat("pointlight.linear", 0.09);
-	shader.uniformSetFloat("pointlight.quadratic", 0.032);*/
+	shader.uniformSetFloat("pointlight.quadratic", 0.032);
 
 
-	/*shader.uniformSetVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
+	shader.uniformSetVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
 	shader.uniformSetVec3("dirlight.diffuse", 0.5f, 0.5f, 0.5f);
 	shader.uniformSetVec3("dirlight.specular", 1.0f, 1.0f, 1.0f);
-	shader.uniformSetVec3("dirlight.direction", lightDir);*/
+	shader.uniformSetVec3("dirlight.direction", lightDir);
 
 	shader.uniformSetVec3("spotlight.ambient", 0.2f, 0.2f, 0.2f);
 	shader.uniformSetVec3("spotlight.diffuse", 0.5f, 0.5f, 0.5f);
