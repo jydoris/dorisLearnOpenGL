@@ -36,6 +36,7 @@ struct spotLight{
 	vec3 position;
 	vec3 direction;
 	float cutOff;
+	float outLine;
 
 	vec3 ambient;
 	vec3 diffuse;
@@ -104,7 +105,8 @@ void main()
 	vec3 diffuse = max(dot(norm, lightVec), 0.0) *spotlight.diffuse * texture(objectMate.diffuseMap, TexCoord).rgb;
 	
 	float theta = dot(lightVec, normalize(-spotlight.direction));
-	float factor =  theta > spotlight.cutOff? theta: 0.0;
+	float epsilon = spotlight.cutOff - spotlight.outLine;
+	float factor =  theta > spotlight.outLine? (theta - spotlight.outLine) / epsilon: 0.0;
 	
 	//specular light
 	vec3 viewVec = normalize(viewPos - FragPos);
